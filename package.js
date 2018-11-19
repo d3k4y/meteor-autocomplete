@@ -31,7 +31,7 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function(api) {
-  api.use("mizzao:autocomplete");
+  api.use("d3k4y:autocomplete");
 
   api.use('coffeescript');
   api.use('mongo');
