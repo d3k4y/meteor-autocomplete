@@ -1,12 +1,12 @@
 Package.describe({
   name: "d3k4y:autocomplete",
   summary: "Client/server autocompletion designed for Meteor's collections and reactivity",
-  version: "0.6.1",
+  version: "0.6.2",
   git: "https://github.com/d3k4y/meteor-autocomplete.git"
 });
 
 Package.onUse(function (api) {
-  api.versionsFrom("1.0");
+  api.versionsFrom("1.8");
 
   api.use(['blaze', 'templating', 'jquery', 'check', 'tracker'], 'client');
   api.use(['coffeescript', 'underscore']); // both
