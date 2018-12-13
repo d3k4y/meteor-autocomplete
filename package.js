@@ -9,7 +9,7 @@ Package.onUse(function (api) {
   api.versionsFrom("1.8");
 
   api.use(['blaze-html-templates@1.1.2', 'jquery@1.11.11', 'check', 'tracker'], 'client');
-  api.use(['coffeescript@1.0.17', 'underscore']); // both
+  api.use(['coffeescript', 'underscore']); // both
   api.use(['mongo', 'ddp']);
 
   api.use("dandv:caret-position@2.1.1", 'client');
