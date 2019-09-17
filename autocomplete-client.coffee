@@ -186,7 +186,10 @@ class @AutoComplete
         @prev()
       when 27 # ESCAPE
         @$element.blur()
-        @hideList()
+        node = @tmplInst.find(".-autocomplete-item.selected")
+        return false unless node?
+        doc = Blaze.getData(node)
+        @hideList(doc)
 
     return
 
@@ -195,11 +198,11 @@ class @AutoComplete
     # or the caret position (selectionStart) will not be correct
     Meteor.defer => @onKeyUp()
 
-  onBlur: ->
+  onBlur: (doc, e) ->
     # We need to delay this so click events work
     # TODO this is a bit of a hack; see if we can't be smarter
     Meteor.setTimeout =>
-      @hideList()
+      @hideList(doc)
     , 500
 
   onItemClick: (doc, e) => @processSelection(doc, @rules[@matched])
@@ -256,7 +259,7 @@ class @AutoComplete
 
     unless isWholeField(rule)
       @replace(replacement, rule)
-      @hideList()
+      @hideList(doc)
 
     else
       # Empty string or doesn't exist?
@@ -286,9 +289,10 @@ class @AutoComplete
     @element.setSelectionRange(newPosition, newPosition)
     return
 
-  hideList: ->
+  hideList: (doc) ->
     @setMatchedRule(-1)
     @setFilter(null)
+    @$element.trigger("autocompletehidelist", doc)
 
   getText: ->
     return @$element.val() || @$element.text()
@@ -345,6 +349,7 @@ class @AutoComplete
     next = currentItem.next()
     if next.length
       next.addClass("selected")
+      @$element.trigger("autocompletecursor", next)
     else # End of list or lost selection; Go back to first item
       @tmplInst.$(".-autocomplete-item:first-child").addClass("selected")
 
@@ -357,6 +362,7 @@ class @AutoComplete
     prev = currentItem.prev()
     if prev.length
       prev.addClass("selected")
+      @$element.trigger("autocompletecursor", prev)
     else # Beginning of list or lost selection; Go to end of list
       @tmplInst.$(".-autocomplete-item:last-child").addClass("selected")
 
